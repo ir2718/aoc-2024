@@ -137,6 +137,6 @@ func secondProblem() {
 }
 
 func main() {
-	// firstProblem()
+	firstProblem()
 	secondProblem()
 }
