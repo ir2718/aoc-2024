@@ -81,22 +81,16 @@ func secondProblem() {
 	numPossibleCycles := 0
 	for i := 0; i < gridHeight; i++ {
 		for j := 0; j < gridWidth; j++ {
+			if originalGrid[i][j] == "#" {
+				continue
+			}
 
 			currPoint := [2]int{originalCurrPoint[0], originalCurrPoint[1]}
 			visited := map[[2]int][2]int{}
 			currDirection := [2]int{-1, 0}
 			visited[currPoint] = currDirection
 
-			// Perform deep copy.
-			newGrid := make([][]string, len(originalGrid))
-			for k := range originalGrid {
-				newGrid[k] = make([]string, len(originalGrid[k]))
-				copy(newGrid[k], originalGrid[k])
-			}
-
-			if newGrid[i][j] != "#" {
-				newGrid[i][j] = "#"
-			}
+			originalGrid[i][j] = "#"
 
 			for {
 				// Simulate moving around the grid with lazy implementation of
@@ -113,7 +107,7 @@ func secondProblem() {
 				} else if possibleNextPoint[0] < 0 || possibleNextPoint[0] >= gridHeight ||
 					possibleNextPoint[1] < 0 || possibleNextPoint[1] >= gridWidth {
 					break
-				} else if newGrid[possibleNextPoint[0]][possibleNextPoint[1]] == "#" {
+				} else if originalGrid[possibleNextPoint[0]][possibleNextPoint[1]] == "#" {
 					if currDirection[0] == -1 && currDirection[1] == 0 {
 						currDirection[0] = 0
 						currDirection[1] = 1
@@ -131,9 +125,11 @@ func secondProblem() {
 					currPoint[0] += currDirection[0]
 					currPoint[1] += currDirection[1]
 					visited[currPoint] = currDirection
-					newGrid[currPoint[0]][currPoint[1]] = "*"
+					originalGrid[currPoint[0]][currPoint[1]] = "*"
 				}
 			}
+
+			originalGrid[i][j] = "."
 		}
 	}
 
